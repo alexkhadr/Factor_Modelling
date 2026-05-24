@@ -5,7 +5,7 @@ import numpy as np
 RIDGE_EPSILON = 1.0e-8
 
 
-def BSS(returns, factRet, lambda_, K):
+def BSS(returns, factRet, lambda_, K, return_loadings=False):
     """
     Best Subset Selection model using exhaustive search.
 
@@ -49,7 +49,6 @@ def BSS(returns, factRet, lambda_, K):
 
         # Try every subset size from 1 to K
         for subset_size in range(1, K + 1):
-
             for subset in itertools.combinations(range(p), subset_size):
 
                 subset = list(subset)
@@ -86,7 +85,10 @@ def BSS(returns, factRet, lambda_, K):
     factor_loadings = B[1:, :]
 
     # Expected excess returns
-    mu = X.mean(axis=0) @ B
+    alpha = B[0, :]          # (n,)
+    Beta  = B[1:, :]         # (p, n)
+    f_mean = F.mean(axis=0)  # (p,)  mean of actual factors only
+    mu = alpha + Beta.T @ f_mean  # (n,)
 
     # Factor covariance matrix
     factor_cov = np.cov(factor_matrix, rowvar=False, ddof=1)
@@ -104,4 +106,6 @@ def BSS(returns, factRet, lambda_, K):
     Q = 0.5 * (Q + Q.T)
     Q = Q + RIDGE_EPSILON * np.eye(Q.shape[0])
 
+    if return_loadings:
+        return mu, Q, B
     return mu, Q

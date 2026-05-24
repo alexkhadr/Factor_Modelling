@@ -42,7 +42,15 @@ def MVO(mu, Q, targetRet):
 
     # Solve optimization problem
     problem = cp.Problem(objective, constraints)
-    problem.solve()
+    problem.solve(solver=cp.CLARABEL, verbose=False)
+
+    if problem.status not in ("optimal", "optimal_inaccurate"):
+        print(f"  MVO warning: '{problem.status}' — falling back to min-variance")
+        fallback = cp.Problem(cp.Minimize(cp.quad_form(x_var, Q)),
+                            [cp.sum(x_var) == 1, x_var >= 0])
+        fallback.solve(solver=cp.CLARABEL, verbose=False)
+        if fallback.status not in ("optimal", "optimal_inaccurate"):
+            raise RuntimeError(f"MVO fallback also failed: {fallback.status}")
 
     # Extract optimal weights
     x = x_var.value

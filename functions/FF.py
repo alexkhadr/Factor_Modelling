@@ -28,7 +28,7 @@ def FF(returns, factRet, lambda_, K):
     X = np.column_stack((np.ones(T), F))
 
     # OLS coefficients: B = (X'X)^(-1)X'Y
-    B = np.linalg.inv(X.T @ X) @ X.T @ returns
+    B = np.linalg.lstsq(X.T @ X, X.T @ returns, rcond=None)[0]
 
     # Separate alpha and betas
     alpha = B[0, :]
