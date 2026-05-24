@@ -1,42 +1,3 @@
-<div align="center">
-
-<br><br>
-
-<h1>MMF1921 Project 1</h1>
-<h2>Factor Models and Portfolio Optimization</h2>
-
-<br><br>
-
-<h3>Course</h3>
-<p>MMF1921 – Operations Research</p>
-
-<h3>Program</h3>
-<p>Master of Mathematical Finance</p>
-
-<h3>University</h3>
-<p>University of Toronto</p>
-
-<br>
-
-<h3>Prepared by</h3>
-<p>
-Katie Chai<br>
-Alexander Khadra<br>
-Jérôme Charbonneau
-</p>
-
-<br>
-
-<h3>Submitted to</h3>
-<p>Roy Kwon</p>
-
-<h3>Date</h3>
-<p>May 24, 2026</p>
-
-</div>
-
-<div style="page-break-after: always;"></div>
-
 # 1. Introduction
 
 In this project, we study how different factor models can be used to estimate the inputs required for portfolio optimization. More specifically, we compare four models: an Ordinary Least Squares (OLS) model using all eight factors, the Fama-French three-factor model (FF), a Least Absolute Shrinkage and Selection Operator model (LASSO), and a Best Subset Selection model (BSS).
@@ -288,7 +249,7 @@ The investment horizon runs from January 2012 to December 2016, with annual reba
 3. Compute the target return as the geometric mean of the market factor over the calibration window.
 4. Solve the MVO problem to obtain optimal portfolio weights $\mathbf{x}$.
 5. Compute the number of shares to hold based on current portfolio value and asset prices.
-6. Track portfolio value daily throughout the investment year using realized prices.
+6. Track portfolio value monthly throughout the investment year using realized prices.
 7. Roll the calibration and test windows forward by one year and repeat.
 
 This procedure is applied independently to each of the four factor models, producing four parallel portfolio wealth paths that can be compared over the out-of-sample period.
@@ -345,7 +306,7 @@ It is important to note that in-sample model fit does not necessarily translate 
 
 To visualize the out-of-sample performance, we plot the total wealth of each portfolio from January 2012 to December 2016, starting from an initial investment of $100,000.
 
-**[Insert portfolio wealth evolution plot here.]**
+![Portfolio wealth evolution](images/wealth.svg)
 
 The wealth plot allows us to identify periods where specific models outperform or underperform and to detect large drawdowns or periods of elevated volatility. Divergence between the four portfolios tends to be most pronounced following rebalancing dates, when the newly estimated $\mu$ and $Q$ lead to substantially different weight allocations across models.
 
@@ -353,13 +314,13 @@ The wealth plot allows us to identify periods where specific models outperform o
 
 In addition to performance metrics, we analyze how the portfolio weights change at each annual rebalancing. Since short selling is not allowed, all weights are non-negative and sum to one. The area plots below show the weight allocated to each asset over the five investment periods.
 
-**[Insert area plot of portfolio weights for OLS portfolio here.]**
+![OLS portfolio weights](images/weights_ols_portfolio.svg)
 
-**[Insert area plot of portfolio weights for FF portfolio here.]**
+![FF portfolio weights](images/weights_ff_portfolio.svg)
 
-**[Insert area plot of portfolio weights for LASSO portfolio here.]**
+![LASSO portfolio weights](images/weights_lasso_portfolio.svg)
 
-**[Insert area plot of portfolio weights for BSS portfolio here.]**
+![BSS portfolio weights](images/weights_bss_portfolio.svg)
 
 A well-diversified portfolio allocates meaningful weight to many assets. A concentrated portfolio relies heavily on a small number of stocks, which can amplify idiosyncratic risk even if systematic risk is managed by the factor model. Because MVO tends to over-weight assets with high estimated $\mu$ and low estimated variance, the resulting portfolios are often more concentrated than a naive equal-weight portfolio. The degree of concentration varies across models depending on the spread and stability of the estimated expected returns.
 
